@@ -63,4 +63,10 @@ def get_score(game_stamps, offset):
         Takes list of game's stamps and time offset for which returns the scores for the home and away teams.
         Please pay attention to that for some offsets the game_stamps list may not contain scores.
     '''
+    res = ((d := INITIAL_STAMP['score'])['home'], d['away'])
+    for d in game_stamps:
+        if d['offset'] > offset:
+            break
+        res = ((d2 := d['score'])['home'], d2['away'])
     # return home, away
+    return res
