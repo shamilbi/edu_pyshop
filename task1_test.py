@@ -1,5 +1,6 @@
-from task1 import game_stamps, get_score, INITIAL_STAMP
+from task1 import get_score, INITIAL_STAMP, generate_game
 
+game_stamps = generate_game()
 
 def extract_scores(d: dict):
     return ((d2 := d['score'])['home'], d2['away'])
