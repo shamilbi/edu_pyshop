@@ -1,0 +1,4 @@
+*.tmp
+*.pyc
+.venv/
+requirements-freeze.txt
