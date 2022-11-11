@@ -10,9 +10,6 @@ class TestStringMethods(unittest.TestCase):
     def setUp(self):
         self.game_stamps = generate_game()
 
-    def test_none(self):
-        assert get_score(None, 1) == extract_scores(INITIAL_STAMP)
-
     def test_bad_offset_1(self):
         assert get_score(self.game_stamps, -1) == extract_scores(INITIAL_STAMP)
 
@@ -21,21 +18,28 @@ class TestStringMethods(unittest.TestCase):
         offset = d['offset']
         assert get_score(self.game_stamps, offset + 1) == extract_scores(d)
 
-    def test_offset(self):
+    def test_bad_offset_3(self):
+        with self.assertRaises(ScoreException):
+            get_score(self.game_stamps, '05')
+
+    def test_bad_list_1(self):
+        assert get_score(None, 1) == extract_scores(INITIAL_STAMP)
+
+    def test_bad_list_2(self):
+        with self.assertRaises(ScoreException):
+            get_score('list', 5)
+
+    def test_bad_list_3(self):
+        with self.assertRaises(ScoreException):
+            get_score([{1: 2}], 5)
+
+    def test_offset_last(self):
         d = self.game_stamps[-1]
         offset = d['offset']
         assert get_score(self.game_stamps, offset) == extract_scores(d)
 
-    def test_mid_offset(self):
+    def test_offset_mid(self):
         i = len(self.game_stamps) // 2
         d = self.game_stamps[i]
         offset = d['offset']
         assert get_score(self.game_stamps, offset) == extract_scores(d)
-
-    def test_exception(self):
-        with self.assertRaises(ScoreException):
-            get_score(self.game_stamps, '05')
-        with self.assertRaises(ScoreException):
-            get_score('list', 5)
-        with self.assertRaises(ScoreException):
-            get_score([{1: 2}], 5)
