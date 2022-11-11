@@ -1,4 +1,5 @@
-from task1 import get_score, INITIAL_STAMP, generate_game
+import pytest
+from task1 import get_score, INITIAL_STAMP, generate_game, ScoreException
 
 game_stamps = generate_game()
 
@@ -19,3 +20,10 @@ def test_01():
     d = game_stamps[i]
     offset = d['offset']
     assert get_score(game_stamps, offset) == extract_scores(d)
+
+    with pytest.raises(ScoreException):
+        get_score(game_stamps, '05')
+    with pytest.raises(ScoreException):
+        get_score('list', 5)
+    with pytest.raises(ScoreException):
+        get_score([{1: 2}], 5)
