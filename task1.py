@@ -53,6 +53,10 @@ def generate_game():
     return stamps
 
 
+class ScoreException(Exception):
+    pass
+
+
 def get_score(game_stamps, offset):
     '''
         Takes list of game's stamps and time offset for which returns the scores for the home and away teams.
@@ -61,17 +65,20 @@ def get_score(game_stamps, offset):
     def extract_scores(d: dict):
         return ((d2 := d['score'])['home'], d2['away'])
 
-    res = extract_scores(INITIAL_STAMP)
-    if not game_stamps or offset < 0:
+    try:
+        res = extract_scores(INITIAL_STAMP)
+        if not game_stamps or offset < 0:
+            return res
+        if offset > (d := game_stamps[-1])['offset']:
+            return extract_scores(d)
+        for d in game_stamps:
+            if d['offset'] > offset:
+                break
+            res = extract_scores(d)
+        # return home, away
         return res
-    if offset > (d := game_stamps[-1])['offset']:
-        return extract_scores(d)
-    for d in game_stamps:
-        if d['offset'] > offset:
-            break
-        res = extract_scores(d)
-    # return home, away
-    return res
+    except (TypeError, KeyError) as e:
+        raise ScoreException() from e
 
 
 if __name__ == '__main__':
