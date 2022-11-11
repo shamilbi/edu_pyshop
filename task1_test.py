@@ -9,7 +9,13 @@ def extract_scores(d: dict):
 def test_01():
     assert get_score(None, 1) == extract_scores(INITIAL_STAMP)
     assert get_score(game_stamps, -1) == extract_scores(INITIAL_STAMP)
+
     d = game_stamps[-1]
     offset = d['offset']
     assert get_score(game_stamps, offset) == extract_scores(d)
     assert get_score(game_stamps, offset + 1) == extract_scores(d)
+
+    i = len(game_stamps) // 2
+    d = game_stamps[i]
+    offset = d['offset']
+    assert get_score(game_stamps, offset) == extract_scores(d)
