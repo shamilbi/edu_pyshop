@@ -1,5 +1,5 @@
 import unittest
-from task1 import get_score, INITIAL_STAMP, generate_game
+from task1 import get_score, INITIAL_STAMP, generate_game, ScoreException
 
 
 def extract_scores(d: dict):
@@ -31,3 +31,11 @@ class TestStringMethods(unittest.TestCase):
         d = self.game_stamps[i]
         offset = d['offset']
         assert get_score(self.game_stamps, offset) == extract_scores(d)
+
+    def test_exception(self):
+        with self.assertRaises(ScoreException):
+            get_score(self.game_stamps, '05')
+        with self.assertRaises(ScoreException):
+            get_score('list', 5)
+        with self.assertRaises(ScoreException):
+            get_score([{1: 2}], 5)
